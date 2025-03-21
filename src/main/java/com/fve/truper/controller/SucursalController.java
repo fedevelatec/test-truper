@@ -20,5 +20,7 @@ public class SucursalController {
     public ResponseEntity<Sucursal> save(@RequestBody Sucursal sucursal) {
         final Sucursal newSucursal = sucursalService.save(sucursal);
         return ResponseEntity.ok(newSucursal);
+
+
     }
 }
