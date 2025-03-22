@@ -1,5 +1,6 @@
 package com.fve.truper.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,8 @@ public class Producto {
     private String descripcion;
     private BigDecimal precio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ordenId")
+    @JsonIgnore
     private Orden orden;
 }

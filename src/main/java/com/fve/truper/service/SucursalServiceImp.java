@@ -13,7 +13,6 @@ public class SucursalServiceImp implements SucursalService {
 
     @Override
     public Sucursal save(Sucursal sucursal) {
-        Sucursal newSucursal = sucursalRepository.save(sucursal);
-        return newSucursal;
+        return sucursalRepository.save(sucursal);
     }
 }

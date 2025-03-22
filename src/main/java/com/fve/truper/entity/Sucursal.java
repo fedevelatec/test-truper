@@ -18,6 +18,6 @@ public class Sucursal {
     private int sucursalId;
     private String nombre;
 
-    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "sucursal")
     private List<Orden> ordenes;
 }

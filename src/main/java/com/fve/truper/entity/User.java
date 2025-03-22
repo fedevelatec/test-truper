@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;
@@ -28,6 +28,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 }

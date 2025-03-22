@@ -20,17 +20,21 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private long refreshExpiration;
 
-    private String extractUsername(final String token) {
+    public String extractUsername(final String token) {
         return Jwts.parser()
-                .verifyWith(getSignKey())
+                .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
                 .getSubject();
     }
 
-    private String generateToken(final User user) {
+    public String generateToken(final User user) {
         return buildToken(user, jwtExpiration);
+    }
+
+    public String generateRefreshToken(final User user) {
+        return buildToken(user, refreshExpiration);
     }
 
     private String buildToken(final User user, final long expiration) {
@@ -40,12 +44,30 @@ public class JwtService {
                 .claims(Map.of("name", user.getName()))
                 .subject(user.getEmail())
                 .issuedAt( new Date(System.currentTimeMillis()))
-                .expiration( new Date(System.currentTimeMillis()))
-                .signWith(getSignKey())
+                .expiration( new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey())
                 .compact();
     }
 
-    private SecretKey getSignKey() {
+    public boolean isTokenValid(final String token, final User user) {
+        final String username = extractUsername(token);
+        return (username.equals(user.getEmail())) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getExpiration();
+    }
+
+    private SecretKey getSignInKey() {
         final byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }

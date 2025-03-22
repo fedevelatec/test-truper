@@ -1,5 +1,6 @@
 package com.fve.truper.controller;
 
+import com.fve.truper.aop.LogExecutionTime;
 import com.fve.truper.entity.Sucursal;
 import com.fve.truper.service.SucursalService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,8 @@ public class SucursalController {
 
     private final SucursalService sucursalService;
 
-    @PostMapping("/alta")
+    @PostMapping
+    @LogExecutionTime
     public ResponseEntity<Sucursal> save(@RequestBody Sucursal sucursal) {
         final Sucursal newSucursal = sucursalService.save(sucursal);
         return ResponseEntity.ok(newSucursal);

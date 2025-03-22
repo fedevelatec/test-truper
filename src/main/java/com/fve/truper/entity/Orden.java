@@ -1,5 +1,6 @@
 package com.fve.truper.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +22,11 @@ public class Orden {
     private Date fecha;
     private BigDecimal total;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sucursalId")
+    @JsonIgnore
     private Sucursal sucursal;
 
-    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orden")
     private List<Producto> productos;
 }

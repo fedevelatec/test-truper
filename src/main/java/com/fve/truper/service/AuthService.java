@@ -12,7 +12,7 @@ public interface AuthService {
 
     public void saveUserToken( User user, String jwtToken);
 
-    public void removeAllUserTokens(User user);
+    public void revokeAllUserTokens(User user);
 
     public TokenResponse refreshToken(String refreshToken);
 }
